@@ -42,7 +42,7 @@ uploaded_file = st.file_uploader("Upload file dataset (CSV)", type=['csv'])
 if uploaded_file is not None:
     try:
         # Membaca dataset dari file yang di-upload
-        df = pd.read_csv(uploaded_file)
+        df = pd.read_csv(uploaded_file, on_bad_lines='skip')
         st.write('Preview Dataset:')
 
         # Menampilkan dataset dengan scroll
