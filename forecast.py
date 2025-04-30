@@ -55,10 +55,10 @@ if uploaded_file is not None:
         target = st.selectbox('Pilih Kolom Target', options=columns)
         # features = st.multiselect('Pilih Kolom Fitur', options=[col for col in columns if col != target])
         if target:
-            # Filter kolom berdasarkan nilai unik yang terkait dengan kolom target
-            unique_value_columns = [col for col in columns if col != target and df[col].nunique() == df[target].nunique()]
-            features = st.multiselect('Pilih Kolom Fitur (Berdasarkan Unique Value Target)', options=unique_value_columns)
-            
+            # Menampilkan nilai unik dari kolom target
+            unique_values = df[target].unique()
+            selected_values = st.multiselect(f'Pilih Nilai Unik dari {target}', options=unique_values)
+
         # Pembersihan dan Transformasi Data
         st.subheader('Pembersihan dan Transformasi Data')
 
