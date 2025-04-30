@@ -160,10 +160,11 @@ if uploaded_file is not None:
         # Mendapatkan nilai resample_factor berdasarkan resample_option
         resample_factor = resample_mapping.get(resample_option, None)
 
-        if st.button('Latih Model'):
+        if st.button('Prediksi'):
             if target and waktu:
                 # model.summary()
                 end_date = df.index.max().date()
+                end_date = pd.Timestamp(end_date)
 
                 # Menyiapkan model sesuai algoritma yang dipilih
                 if option == 'ARIMA':
