@@ -109,14 +109,6 @@ if uploaded_file is not None:
                 else:
                     st.write("Semua nilai hilang telah diisi!")
 
-        # Encoding Kategori
-        categorical_cols = df.select_dtypes(include=['object']).columns.tolist()
-        encode_cols = st.multiselect('Pilih Kolom untuk Encoding', options=categorical_cols)
-        if encode_cols:
-            le = LabelEncoder()
-            for col in encode_cols:
-                df[col] = le.fit_transform(df[col])
-
         st.write('Dataset Setelah Pembersihan dan Transformasi:')
         st.dataframe(df, height=300)
         st.write(f'Jumlah Baris: {df.shape[0]}')
