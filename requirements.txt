@@ -6,4 +6,4 @@ streamlit
 scikit-learn
 numpy
 pmdarima
-seaborn
+# seaborn

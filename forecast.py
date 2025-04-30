@@ -6,7 +6,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
-import seaborn as sns
+# import seaborn as sns
 import plotly.express as px
 import matplotlib.pyplot as plt
 # Menambahkan judul aplikasi
