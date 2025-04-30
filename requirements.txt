@@ -2,8 +2,8 @@
 geopandas
 leafmap
 owslib
-streamlit
-scikit-learn
-numpy
-pmdarima
+streamlit==1.25.0
+scikit-learn==1.2.2
+numpy==1.23.5
+pmdarima==2.0.3
 # seaborn
