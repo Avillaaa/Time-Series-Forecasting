@@ -2,7 +2,7 @@
 streamlit
 scikit-learn
 pandas
-numpy==2.0.2
+numpy==1.26.4
 statsmodels
 pmdarima==2.0.4
 # seaborn
