@@ -8,6 +8,7 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 import seaborn as sns
 import plotly.express as px
+import matplotlib.pyplot as plt
 # Menambahkan judul aplikasi
 st.title('Aplikasi Klasifikasi Kualitas Susu Sapi dengan Machine Learning')
 
