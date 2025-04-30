@@ -53,13 +53,14 @@ if uploaded_file is not None:
         # Menampilkan dropdown untuk memilih variabel fitur dan target
         columns = df.columns.tolist()
         target = st.selectbox('Pilih Kolom Target', options=columns)
-        features = st.multiselect('Pilih Kolom Fitur', options=[col for col in columns if col != target])
-
+        # features = st.multiselect('Pilih Kolom Fitur', options=[col for col in columns if col != target])
+        if target:
+            # Filter kolom berdasarkan nilai unik yang terkait dengan kolom target
+            unique_value_columns = [col for col in columns if col != target and df[col].nunique() == df[target].nunique()]
+            features = st.multiselect('Pilih Kolom Fitur (Berdasarkan Unique Value Target)', options=unique_value_columns)
+            
         # Pembersihan dan Transformasi Data
         st.subheader('Pembersihan dan Transformasi Data')
-        # st.checkbox('Show Dataset Description')
-        # st.subheader('Dataset Description')
-        # st.write(df.describe())
 
         # Menangani nilai hilang
         if st.checkbox('Hapus Baris dengan Nilai Hilang'):
