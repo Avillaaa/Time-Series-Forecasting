@@ -126,6 +126,21 @@ if uploaded_file is not None:
         st.write(f'Jumlah Baris: {df.shape[0]}')
         st.write(f'Jumlah Kolom: {df.shape[1]}')
 
+        start_date = df.index.min()
+        end_date = df.index.max()
+
+        # Slider untuk memilih rentang tanggal
+        date_range = st.slider(
+            'Pilih Rentang Tanggal',
+            min_value=start_date,
+            max_value=end_date,
+            value=(start_date, end_date),  # Nilai default adalah seluruh rentang tanggal
+            format="YYYY-MM-DD"
+        )
+
+        # Filter DataFrame berdasarkan rentang tanggal yang dipilih
+        df = df.loc[date_range[0]:date_range[1]]
+
         # Memilih proporsi data latih dan uji
         test_size = st.slider('Pilih Proporsi Data Uji (%)', min_value=10, max_value=90, value=20)
 
