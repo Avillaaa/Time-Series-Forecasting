@@ -126,8 +126,8 @@ if uploaded_file is not None:
         st.write(f'Jumlah Baris: {df.shape[0]}')
         st.write(f'Jumlah Kolom: {df.shape[1]}')
 
-        start_date = df.index.min()
-        end_date = df.index.max()
+        start_date = df.index.min().date()
+        end_date = df.index.max().date()
 
         # Slider untuk memilih rentang tanggal
         date_range = st.slider(
