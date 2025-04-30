@@ -213,31 +213,43 @@ if uploaded_file is not None:
                         st.write('Dataset Gabungan (Asli + Prediksi):')
                         st.dataframe(dfbaru, height=300)
 
+                        df_before = dfbaru[dfbaru.index <= end_date]
+                        df_after = dfbaru[dfbaru.index > end_date]
+
                         figa = px.line(
-                            dfbaru,
-                            x=dfbaru.index,  # Kolom waktu sebagai sumbu X
-                            y=target,  # Kolom filter sebagai sumbu Y
                             title='Prediksi Penjualan Obat',
                             labels={waktu: 'Waktu', filter: 'Penjualan'},
                             template='plotly_white'
                         )
+
+                        # Tambahkan trace untuk data sebelum end_date
+                        figa.add_scatter(
+                            x=df_before.index,
+                            y=df_before[target],
+                            mode='lines',
+                            line=dict(color='blue'),
+                            name='Sebelum End Date'
+                        )
+
+                        # Tambahkan trace untuk data sesudah end_date
+                        figa.add_scatter(
+                            x=df_after.index,
+                            y=df_after[target],
+                            mode='lines',
+                            line=dict(color='green'),
+                            name='Sesudah End Date'
+                        )
+
+                        # Tambahkan garis vertikal pada end_date
                         figa.add_vline(
-                            x=end_date,  # Posisi garis vertikal
-                            line_dash="dash",  # Gaya garis (putus-putus)
-                            line_color="red",  # Warna garis
-                            annotation_text="End Date",  # Label garis
+                            x=end_date,
+                            line_dash="dash",
+                            line_color="red",
+                            annotation_text="End Date",
                             annotation_position="top right"
                         )
 
-                        # Ubah warna sebelum dan sesudah garis vertikal
-                        figa.update_traces(
-                            line=dict(color="blue"),  # Warna sebelum garis vertikal
-                            selector=dict(x=dfbaru.index <= end_date)
-                        )
-                        figa.update_traces(
-                            line=dict(color="green"),  # Warna sesudah garis vertikal
-                            selector=dict(x=dfbaru.index > end_date)
-                        )
+                        # Tampilkan grafik di Streamlit
                         st.plotly_chart(figa)
 
                 # elif option == 'XGBOOST':
