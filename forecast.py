@@ -8,7 +8,7 @@ from sklearn.metrics import accuracy_score, classification_report, confusion_mat
 import plotly.express as px
 import matplotlib.pyplot as plt
 # Menambahkan judul aplikasi
-st.title('Aplikasi Time-Series Forecasting (Prediksi) Penjualan Obat Tertentu dengan Machine Learning')
+st.title('Aplikasi Time-Series Forecasting (Prediksi) dengan Machine Learning')
 
 # Menambahkan sidebar
 st.sidebar.header('Pilih Algoritma')
@@ -202,11 +202,20 @@ if uploaded_file is not None:
                         df_fitted = pd.DataFrame({target: fitted}, index=date_range)
 
                         # Gabungkan DataFrame asli dengan DataFrame prediksi
-                        df_combined = pd.concat([df, df_fitted])
+                        df = pd.concat([df, df_fitted])
 
                         # Tampilkan DataFrame gabungan
                         st.write('Dataset Gabungan (Asli + Prediksi):')
-                        st.dataframe(df_combined, height=300)
+                        st.dataframe(df, height=300)
+
+                        # fig = px.line(
+                        #     df,
+                        #     x=df.index,  # Kolom waktu sebagai sumbu X
+                        #     y=target,  # Kolom filter sebagai sumbu Y
+                        #     title='Grafik Penjualan Obat',
+                        #     labels={waktu: 'Waktu', filter: 'Penjualan'},
+                        #     template='plotly_white'
+                        # )
 
                 # elif option == 'XGBOOST':
                 #     model = DecisionTreeClassifier()
