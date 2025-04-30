@@ -57,6 +57,9 @@ if uploaded_file is not None:
 
         # Pembersihan dan Transformasi Data
         st.subheader('Pembersihan dan Transformasi Data')
+        st.checkbox('Show Dataset Description')
+        st.subheader('Dataset Description')
+        st.write(df.describe())
 
         # # Menangani nilai hilang
         # if st.checkbox('Hapus Baris dengan Nilai Hilang'):
@@ -167,9 +170,9 @@ if uploaded_file is not None:
 
 # Add after st.dataframe(df, height=300) line
 
-if st.checkbox('Show Dataset Description'):
-    st.subheader('Dataset Description')
-    st.write(df.describe())
+# if st.checkbox('Show Dataset Description'):
+#     st.subheader('Dataset Description')
+#     st.write(df.describe())
 
     # # Display missing values information
     # st.write('Missing Values:')
