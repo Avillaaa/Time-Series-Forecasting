@@ -176,7 +176,7 @@ if uploaded_file is not None:
                             stepwise=True)
                     
                     fitted, confint = model.predict(n_periods=n_periods, return_conf_int=True)
-                    index_of_fc = pd.date_range(df.index[-1], periods = n_periods, freq=resample_factor)
+                    index_of_fc = pd.date_range(df.index[-1], periods = n_periods, freq=resample_option)
 
                     # make series for plotting purpose
                     fitted_series = pd.Series(fitted, index=index_of_fc)
