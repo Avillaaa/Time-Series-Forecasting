@@ -163,7 +163,7 @@ if uploaded_file is not None:
         if st.button('Prediksi'):
             if target and waktu:
                 # model.summary()
-                end_date = df.index.max().datetime()
+                end_date = df.index.max()
                 end_date = pd.Timestamp(end_date)
 
                 # Menyiapkan model sesuai algoritma yang dipilih
