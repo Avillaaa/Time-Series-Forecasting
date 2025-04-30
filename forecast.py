@@ -1,10 +1,8 @@
 import streamlit as st
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler, LabelEncoder
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.naive_bayes import GaussianNB
+from statsmodels.tsa.arima_model import ARIMA
+import pmdarima as pm
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 # import seaborn as sns
 import plotly.express as px
@@ -75,6 +73,14 @@ if uploaded_file is not None:
         # else:
         #     st.warning('Kolom Prediksi Objek (filter) tidak dipilih. Menampilkan dataset asli tanpa filter.')
 
+        n_periods = st.number_input(
+            'Berapa lama prediksi berdasarkan frekuensi prediksi',
+            min_value=1,  # Nilai minimum
+            max_value=365,  # Nilai maksimum
+            value=30,  # Nilai default
+            step=1  # Langkah perubahan nilai
+        )
+
         df = df[[waktu, target]]
         df[target] = pd.to_numeric(df[target], errors='coerce').astype('Int64')  # Menggunakan Int64 untuk mendukung nilai NaN
         df = df.set_index(waktu)
@@ -142,53 +148,92 @@ if uploaded_file is not None:
         df = df.loc[date_range[0]:date_range[1]]
 
         # Memilih proporsi data latih dan uji
-        test_size = st.slider('Pilih Proporsi Data Uji (%)', min_value=10, max_value=90, value=20)
+        # test_size = st.slider('Pilih Proporsi Data Uji (%)', min_value=10, max_value=90, value=20)
 
-        # if st.button('Latih Model'):
-        #     if filter and features:
-        #         X = df[features]
-        #         y = df[filter]
+        resample_mapping = {
+            'D': 7,  # Harian
+            'W': 4,  # Mingguan
+            'M': 12, # Bulanan
+            'Y': 5   # Tahunan
+        }
 
-        #         # Membagi data menjadi data latih dan data uji
-        #         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size/100, random_state=42)
+        # Mendapatkan nilai resample_factor berdasarkan resample_option
+        resample_factor = resample_mapping.get(resample_option, None)
 
-        #         # Standarisasi fitur
-        #         scaler = StandardScaler()
-        #         X_train = scaler.fit_transform(X_train)
-        #         X_test = scaler.transform(X_test)
+        if st.button('Latih Model'):
+            if target and waktu:
+                # model.summary()
 
-        #         # Menyiapkan model sesuai algoritma yang dipilih
-        #         if option == 'ARIMA':
-        #             model = KNeighborsClassifier()
-        #         elif option == 'XGBOOST':
-        #             model = DecisionTreeClassifier()
-        #         else:
-        #             model = GaussianNB()
+                # Menyiapkan model sesuai algoritma yang dipilih
+                if option == 'ARIMA':
+                    model = pm.auto_arima(df, start_p=1, start_q=1,
+                            test='adf',
+                            max_p=3, max_q=3, m=resample_factor,
+                            start_P=0, seasonal=True,
+                            d=None, D=1, trace=True,
+                            error_action='ignore',
+                            suppress_warnings=True,
+                            stepwise=True)
+                    
+                    fitted, confint = model.predict(n_periods=n_periods, return_conf_int=True)
+                    index_of_fc = pd.date_range(df.index[-1], periods = n_periods, freq=resample_factor)
 
-        #         # Melatih model
-        #         model.fit(X_train, y_train)
+                    # make series for plotting purpose
+                    fitted_series = pd.Series(fitted, index=index_of_fc)
+                    lower_series = pd.Series(confint[:, 0], index=index_of_fc)
+                    upper_series = pd.Series(confint[:, 1], index=index_of_fc)
 
-        #         # Memprediksi hasil
-        #         y_pred = model.predict(X_test)
-        #         accuracy = accuracy_score(y_test, y_pred)
-        #         report = classification_report(y_test, y_pred, output_dict=True)
-        #         conf_matrix = confusion_matrix(y_test, y_pred)
+                    if resample_option == 'D':  # Harian
+                        start_date = end_date + pd.Timedelta(days=1)
+                    elif resample_option == 'W':  # Mingguan
+                        start_date = end_date + pd.Timedelta(weeks=1)
+                    elif resample_option == 'M':  # Bulanan
+                        start_date = end_date + pd.DateOffset(months=1)
+                    elif resample_option == 'Y':  # Tahunan
+                        start_date = end_date + pd.DateOffset(years=1)
+                    else:
+                        st.error("Frekuensi waktu tidak valid.")
+                        start_date = None
 
-        #         st.write(f'Akurasi Model: {accuracy:.2f}')
-        #         st.subheader('Classification Report')
-        #         st.text(classification_report(y_test, y_pred))
+                    # Pastikan start_date valid sebelum melanjutkan
+                    if start_date:
+                        # Buat DataFrame baru untuk prediksi
+                        date_range = pd.date_range(start=start_date, periods=n_periods, freq=resample_option)
+                        df_fitted = pd.DataFrame({target: fitted}, index=date_range)
 
-        #         st.subheader('Confusion Matrix')
-        #         fig, ax = plt.subplots(figsize=(10, 7))
-        #         sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues', ax=ax)
-        #         plt.xlabel('Predicted Labels')
-        #         plt.ylabel('True Labels')
-        #         st.pyplot(fig)
+                        # Gabungkan DataFrame asli dengan DataFrame prediksi
+                        df_combined = pd.concat([df, df_fitted])
 
-        #         # Menampilkan beberapa contoh prediksi
-        #         st.subheader('Contoh Prediksi')
-        #         examples = pd.DataFrame({'True': y_test, 'Predicted': y_pred})
-        #         st.write(examples.head(10))
+                        # Tampilkan DataFrame gabungan
+                        st.write('Dataset Gabungan (Asli + Prediksi):')
+                        st.dataframe(df_combined, height=300)
+
+                elif option == 'XGBOOST':
+                    model = DecisionTreeClassifier()
+                else:
+                    model = GaussianNB()
+
+                # # Memprediksi hasil
+                # y_pred = model.predict(X_test)
+                # accuracy = accuracy_score(y_test, y_pred)
+                # report = classification_report(y_test, y_pred, output_dict=True)
+                # conf_matrix = confusion_matrix(y_test, y_pred)
+
+                st.write(f'Akurasi Model: {accuracy:.2f}')
+                st.subheader('Classification Report')
+                st.text(classification_report(y_test, y_pred))
+
+                # st.subheader('Confusion Matrix')
+                # fig, ax = plt.subplots(figsize=(10, 7))
+                # sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues', ax=ax)
+                # plt.xlabel('Predicted Labels')
+                # plt.ylabel('True Labels')
+                # st.pyplot(fig)
+
+                # # Menampilkan beberapa contoh prediksi
+                # st.subheader('Contoh Prediksi')
+                # examples = pd.DataFrame({'True': y_test, 'Predicted': y_pred})
+                # st.write(examples.head(10))
 
         #     else:
         #         st.error('Pilih kolom filter dan fitur dengan benar.')
