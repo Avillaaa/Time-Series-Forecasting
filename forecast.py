@@ -58,7 +58,7 @@ if uploaded_file is not None:
         'Pilih Frekuensi Prediksi',
         options=['D', 'M', 'Y', 'W'],  # D: Harian, M: Bulanan, Y: Tahunan, W: Mingguan
         format_func=lambda x: {'D': 'Harian', 'M': 'Bulanan', 'Y': 'Tahunan', 'W': 'Mingguan'}[x])
-        filter = st.selectbox('Pilih Prediksi Objek berdasaran Kolom', options=columns)
+        filter = st.selectbox('Pilih Prediksi Objek berdasaran Kolom', options=[""] + columns, format_func=lambda x: "Pilih Kolom" if x == "" else x)
         target = st.selectbox('Pilih Kolom Target', options=columns)
         unique_values = df[filter].unique()
         selected_values = st.multiselect(f'Pilih Nilai Unik dari {filter}', options=unique_values)
