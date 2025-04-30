@@ -2,7 +2,7 @@
 geopandas
 leafmap
 owslib
-streamlit==1.25.0
+streamlit
 scikit-learn
 pandas
 numpy==1.23.5
