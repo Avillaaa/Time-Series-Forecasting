@@ -208,10 +208,10 @@ if uploaded_file is not None:
                         st.write('Dataset Gabungan (Asli + Prediksi):')
                         st.dataframe(df_combined, height=300)
 
-                elif option == 'XGBOOST':
-                    model = DecisionTreeClassifier()
-                else:
-                    model = GaussianNB()
+                # elif option == 'XGBOOST':
+                #     model = DecisionTreeClassifier()
+                # else:
+                #     model = GaussianNB()
 
                 # # Memprediksi hasil
                 # y_pred = model.predict(X_test)
@@ -219,9 +219,9 @@ if uploaded_file is not None:
                 # report = classification_report(y_test, y_pred, output_dict=True)
                 # conf_matrix = confusion_matrix(y_test, y_pred)
 
-                st.write(f'Akurasi Model: {accuracy:.2f}')
-                st.subheader('Classification Report')
-                st.text(classification_report(y_test, y_pred))
+                # st.write(f'Akurasi Model: {accuracy:.2f}')
+                # st.subheader('Classification Report')
+                # st.text(classification_report(y_test, y_pred))
 
                 # st.subheader('Confusion Matrix')
                 # fig, ax = plt.subplots(figsize=(10, 7))
