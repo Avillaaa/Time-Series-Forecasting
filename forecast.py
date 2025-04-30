@@ -51,25 +51,25 @@ if uploaded_file is not None:
         st.write(f'Jumlah Kolom: {df.shape[1]}')
 
         st.subheader('Pemilihan Variabel')
-        # Menampilkan dropdown untuk memilih variabel fitur dan target2
+        # Menampilkan dropdown untuk memilih variabel fitur dan filter
         columns = df.columns.tolist()
         waktu = st.selectbox('Pilih Kolom Waktu', options=columns)
         resample_option = st.selectbox(
         'Pilih Frekuensi Prediksi',
         options=['D', 'M', 'Y', 'W'],  # D: Harian, M: Bulanan, Y: Tahunan, W: Mingguan
         format_func=lambda x: {'D': 'Harian', 'M': 'Bulanan', 'Y': 'Tahunan', 'W': 'Mingguan'}[x])
-        target2 = st.selectbox('Pilih Prediksi Objek berdasaran Kolom',target2 = st.selectbox('Pilih Prediksi Objek berdasaran Kolom', options=columns))
+        filter = st.selectbox('Pilih Prediksi Objek berdasaran Kolom',filter = st.selectbox('Pilih Prediksi Objek berdasaran Kolom', options=columns))
         target = st.selectbox('Pilih Kolom Target', options=columns)
-        unique_values = df[target2].unique()
-        selected_values = st.multiselect(f'Pilih Nilai Unik dari {target2}', options=unique_values)
+        unique_values = df[filter].unique()
+        selected_values = st.multiselect(f'Pilih Nilai Unik dari {filter}', options=unique_values)
 
-        if target2:
+        if filter:
             if selected_values:
-                df = df[df[target2].isin(selected_values)]
+                df = df[df[filter].isin(selected_values)]
             else:
-                st.warning(f'Tidak ada nilai unik yang dipilih untuk {target2}. Menampilkan dataset asli tanpa filter.')
+                st.warning(f'Tidak ada nilai unik yang dipilih untuk {filter}. Menampilkan dataset asli tanpa filter.')
         # else:
-        #     st.warning('Kolom Prediksi Objek (target2) tidak dipilih. Menampilkan dataset asli tanpa filter.')
+        #     st.warning('Kolom Prediksi Objek (filter) tidak dipilih. Menampilkan dataset asli tanpa filter.')
 
         df = df[[waktu, target]]
         df = df.set_index(waktu)
@@ -125,9 +125,9 @@ if uploaded_file is not None:
         test_size = st.slider('Pilih Proporsi Data Uji (%)', min_value=10, max_value=90, value=20)
 
         # if st.button('Latih Model'):
-        #     if target2 and features:
+        #     if filter and features:
         #         X = df[features]
-        #         y = df[target2]
+        #         y = df[filter]
 
         #         # Membagi data menjadi data latih dan data uji
         #         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size/100, random_state=42)
@@ -171,7 +171,7 @@ if uploaded_file is not None:
         #         st.write(examples.head(10))
 
         #     else:
-        #         st.error('Pilih kolom target2 dan fitur dengan benar.')
+        #         st.error('Pilih kolom filter dan fitur dengan benar.')
 
     except pd.errors.EmptyDataError:
         st.error('File kosong atau format tidak valid.')
@@ -186,9 +186,9 @@ if st.checkbox('Tampilkan Grafik'):
     fig = px.line(
         df,
         x=df.index,  # Kolom waktu sebagai sumbu X
-        y=target2,  # Kolom target2 sebagai sumbu Y
+        y=filter,  # Kolom filter sebagai sumbu Y
         title='Grafik Penjualan Obat',
-        labels={waktu: 'Waktu', target2: 'Penjualan'},
+        labels={waktu: 'Waktu', filter: 'Penjualan'},
         template='plotly_white'
     )
     # Menampilkan grafik di Streamlit
