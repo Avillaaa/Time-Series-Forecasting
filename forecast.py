@@ -50,12 +50,24 @@ if uploaded_file is not None:
         st.write(f'Jumlah Baris: {df.shape[0]}')
         st.write(f'Jumlah Kolom: {df.shape[1]}')
 
+        st.subheader('Pemilihan Variabel')
         # Menampilkan dropdown untuk memilih variabel fitur dan target
         columns = df.columns.tolist()
+        waktu = st.selectbox('Pilih Kolom Waktu', options=columns)
+        resample_option = st.selectbox(
+        'Pilih Frekuensi Prediksi',
+        options=['D', 'M', 'Y', 'W'],  # D: Harian, M: Bulanan, Y: Tahunan, W: Mingguan
+        format_func=lambda x: {'D': 'Harian', 'M': 'Bulanan', 'Y': 'Tahunan', 'W': 'Mingguan'}[x])
         target = st.selectbox('Pilih Kolom Target', options=columns)
         
         unique_values = df[target].unique()
         selected_values = st.multiselect(f'Pilih Nilai Unik dari {target}', options=unique_values)
+
+        df = df[df[target].isin(selected_values)]
+        df = df[[waktu, target]]
+        df = df.set_index(waktu)
+        df.index = pd.to_datetime(df.index)
+        df = df.resample(resample_option).sum()
 
         # Pembersihan dan Transformasi Data
         st.subheader('Pembersihan dan Transformasi Data')
@@ -169,11 +181,25 @@ if uploaded_file is not None:
 
 # Add after st.dataframe(df, height=300) line
 
-if st.checkbox('Show Dataset Description'):
-    st.subheader('Dataset Description')
+if st.checkbox('Tampilkan Grafik'):
+    st.subheader('Grafik Penjualan Obat')
+    # Membuat grafik menggunakan Plotly
+    fig = px.line(
+        df,
+        x=df.index,  # Kolom waktu sebagai sumbu X
+        y=target,  # Kolom target sebagai sumbu Y
+        title='Grafik Penjualan Obat',
+        labels={waktu: 'Waktu', target: 'Penjualan'},
+        template='plotly_white'
+    )
+    # Menampilkan grafik di Streamlit
+    st.plotly_chart(fig)
+
+if st.checkbox('Tampilkan deskripsi dataset'):
+    st.subheader('Deskripsi Dataset')
     st.write(df.describe())
 
     # Display missing values information
-    st.write('Missing Values:')
+    st.write('Jumlah Nilai Hilang:')
     missing_values = df.isnull().sum()
     st.write(missing_values[missing_values > 0])
