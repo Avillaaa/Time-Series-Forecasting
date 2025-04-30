@@ -183,7 +183,7 @@ if uploaded_file is not None:
             fig = px.line(
                 df,
                 x=df.index,  # Kolom waktu sebagai sumbu X
-                y=filter,  # Kolom filter sebagai sumbu Y
+                y=target,  # Kolom filter sebagai sumbu Y
                 title='Grafik Penjualan Obat',
                 labels={waktu: 'Waktu', filter: 'Penjualan'},
                 template='plotly_white'
