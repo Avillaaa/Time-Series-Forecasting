@@ -163,6 +163,7 @@ if uploaded_file is not None:
         if st.button('Latih Model'):
             if target and waktu:
                 # model.summary()
+                end_date = df.index.max().date()
 
                 # Menyiapkan model sesuai algoritma yang dipilih
                 if option == 'ARIMA':
