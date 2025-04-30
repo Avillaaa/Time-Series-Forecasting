@@ -166,6 +166,8 @@ if uploaded_file is not None:
                 # model.summary()
                 end_date = df.index.max()
                 end_date = pd.Timestamp(end_date)
+                st.write(f"end_date: {end_date}, type: {type(end_date)}")
+                st.write(f"resample_option: {resample_option}")
 
                 # Menyiapkan model sesuai algoritma yang dipilih
                 if option == 'ARIMA':
