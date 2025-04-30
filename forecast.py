@@ -171,7 +171,7 @@ if st.checkbox('Show Dataset Description'):
     st.subheader('Dataset Description')
     st.write(df.describe())
 
-    # Display missing values information
-    st.write('Missing Values:')
-    missing_values = df.isnull().sum()
-    st.write(missing_values[missing_values > 0])
+    # # Display missing values information
+    # st.write('Missing Values:')
+    # missing_values = df.isnull().sum()
+    # st.write(missing_values[missing_values > 0])
