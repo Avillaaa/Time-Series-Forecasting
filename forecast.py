@@ -61,7 +61,7 @@ if uploaded_file is not None:
         # filter = st.selectbox('Pilih Prediksi Objek berdasaran Kolom', options=[""] + columns, format_func=lambda x: "Pilih Kolom" if x == "" else x)
         target = st.selectbox('Pilih Kolom Target', options=columns)
         filter = st.selectbox('Pilih Prediksi Objek berdasarkan Kolom', options=[""] + columns, format_func=lambda x: "Pilih Kolom" if x == "" else x)
-        
+
         if filter:  # Pastikan filter tidak kosong
             unique_values = df[filter].unique()
             selected_values = st.multiselect(f'Pilih Nilai Unik dari {filter}', options=unique_values)
@@ -76,6 +76,7 @@ if uploaded_file is not None:
         #     st.warning('Kolom Prediksi Objek (filter) tidak dipilih. Menampilkan dataset asli tanpa filter.')
 
         df = df[[waktu, target]]
+        df[target] = pd.to_numeric(df[target], errors='coerce').astype('Int64')  # Menggunakan Int64 untuk mendukung nilai NaN
         df = df.set_index(waktu)
         df.index = pd.to_datetime(df.index)
         df = df.resample(resample_option).sum()
