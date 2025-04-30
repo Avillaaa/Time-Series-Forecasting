@@ -6,5 +6,5 @@ streamlit
 scikit-learn
 pandas
 numpy==1.23.5
-pmdarima==2.0.3
+pmdarima
 # seaborn
