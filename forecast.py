@@ -53,11 +53,9 @@ if uploaded_file is not None:
         # Menampilkan dropdown untuk memilih variabel fitur dan target
         columns = df.columns.tolist()
         target = st.selectbox('Pilih Kolom Target', options=columns)
-        # features = st.multiselect('Pilih Kolom Fitur', options=[col for col in columns if col != target])
-        if target:
-            # Menampilkan nilai unik dari kolom target
-            unique_values = df[target].unique()
-            selected_values = st.multiselect(f'Pilih Nilai Unik dari {target}', options=unique_values)
+        
+        unique_values = df[target].unique()
+        selected_values = st.multiselect(f'Pilih Nilai Unik dari {target}', options=unique_values)
 
         # Pembersihan dan Transformasi Data
         st.subheader('Pembersihan dan Transformasi Data')
