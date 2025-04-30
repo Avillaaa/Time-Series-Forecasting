@@ -58,16 +58,20 @@ if uploaded_file is not None:
         'Pilih Frekuensi Prediksi',
         options=['D', 'M', 'Y', 'W'],  # D: Harian, M: Bulanan, Y: Tahunan, W: Mingguan
         format_func=lambda x: {'D': 'Harian', 'M': 'Bulanan', 'Y': 'Tahunan', 'W': 'Mingguan'}[x])
-        filter = st.selectbox('Pilih Prediksi Objek berdasaran Kolom', options=[""] + columns, format_func=lambda x: "Pilih Kolom" if x == "" else x)
+        # filter = st.selectbox('Pilih Prediksi Objek berdasaran Kolom', options=[""] + columns, format_func=lambda x: "Pilih Kolom" if x == "" else x)
         target = st.selectbox('Pilih Kolom Target', options=columns)
-        unique_values = df[filter].unique()
-        selected_values = st.multiselect(f'Pilih Nilai Unik dari {filter}', options=unique_values)
+        filter = st.selectbox('Pilih Prediksi Objek berdasarkan Kolom', options=[""] + columns, format_func=lambda x: "Pilih Kolom" if x == "" else x)
+        
+        if filter:  # Pastikan filter tidak kosong
+            unique_values = df[filter].unique()
+            selected_values = st.multiselect(f'Pilih Nilai Unik dari {filter}', options=unique_values)
 
-        if filter:
             if selected_values:
                 df = df[df[filter].isin(selected_values)]
             else:
                 st.warning(f'Tidak ada nilai unik yang dipilih untuk {filter}. Menampilkan dataset asli tanpa filter.')
+        else:
+            st.warning('Kolom Prediksi Objek (filter) tidak dipilih. Menampilkan dataset asli tanpa filter.')
         # else:
         #     st.warning('Kolom Prediksi Objek (filter) tidak dipilih. Menampilkan dataset asli tanpa filter.')
 
