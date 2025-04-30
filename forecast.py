@@ -202,20 +202,38 @@ if uploaded_file is not None:
                         df_fitted = pd.DataFrame({target: fitted}, index=date_range)
 
                         # Gabungkan DataFrame asli dengan DataFrame prediksi
-                        df = pd.concat([df, df_fitted])
+                        dfbaru = pd.concat([df, df_fitted])
 
                         # Tampilkan DataFrame gabungan
                         st.write('Dataset Gabungan (Asli + Prediksi):')
-                        st.dataframe(df, height=300)
+                        st.dataframe(dfbaru, height=300)
 
-                        # fig = px.line(
-                        #     df,
-                        #     x=df.index,  # Kolom waktu sebagai sumbu X
-                        #     y=target,  # Kolom filter sebagai sumbu Y
-                        #     title='Grafik Penjualan Obat',
-                        #     labels={waktu: 'Waktu', filter: 'Penjualan'},
-                        #     template='plotly_white'
-                        # )
+                        figa = px.line(
+                            dfbaru,
+                            x=dfbaru.index,  # Kolom waktu sebagai sumbu X
+                            y=target,  # Kolom filter sebagai sumbu Y
+                            title='Prediksi Penjualan Obat',
+                            labels={waktu: 'Waktu', filter: 'Penjualan'},
+                            template='plotly_white'
+                        )
+                        figa.add_vline(
+                            x=end_date,  # Posisi garis vertikal
+                            line_dash="dash",  # Gaya garis (putus-putus)
+                            line_color="red",  # Warna garis
+                            annotation_text="End Date",  # Label garis
+                            annotation_position="top right"
+                        )
+
+                        # Ubah warna sebelum dan sesudah garis vertikal
+                        figa.update_traces(
+                            line=dict(color="blue"),  # Warna sebelum garis vertikal
+                            selector=dict(x=dfbaru.index <= end_date)
+                        )
+                        figa.update_traces(
+                            line=dict(color="green"),  # Warna sesudah garis vertikal
+                            selector=dict(x=dfbaru.index > end_date)
+                        )
+                        st.plotly_chart(figa)
 
                 # elif option == 'XGBOOST':
                 #     model = DecisionTreeClassifier()
