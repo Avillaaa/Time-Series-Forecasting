@@ -177,6 +177,19 @@ if uploaded_file is not None:
 
         #     else:
         #         st.error('Pilih kolom filter dan fitur dengan benar.')
+        if st.checkbox('Tampilkan Grafik'):
+            st.subheader('Grafik Penjualan Obat')
+            # Membuat grafik menggunakan Plotly
+            fig = px.line(
+                df,
+                x=df.index,  # Kolom waktu sebagai sumbu X
+                y=filter,  # Kolom filter sebagai sumbu Y
+                title='Grafik Penjualan Obat',
+                labels={waktu: 'Waktu', filter: 'Penjualan'},
+                template='plotly_white'
+            )
+            # Menampilkan grafik di Streamlit
+            st.plotly_chart(fig)
 
     except pd.errors.EmptyDataError:
         st.error('File kosong atau format tidak valid.')
@@ -184,20 +197,6 @@ if uploaded_file is not None:
         st.error(f'Error: {e}')
 
 # Add after st.dataframe(df, height=300) line
-
-if st.checkbox('Tampilkan Grafik'):
-    st.subheader('Grafik Penjualan Obat')
-    # Membuat grafik menggunakan Plotly
-    fig = px.line(
-        df,
-        x=df.index,  # Kolom waktu sebagai sumbu X
-        y=filter,  # Kolom filter sebagai sumbu Y
-        title='Grafik Penjualan Obat',
-        labels={waktu: 'Waktu', filter: 'Penjualan'},
-        template='plotly_white'
-    )
-    # Menampilkan grafik di Streamlit
-    st.plotly_chart(fig)
 
 if st.checkbox('Tampilkan deskripsi dataset'):
     st.subheader('Deskripsi Dataset')
