@@ -16,7 +16,7 @@ st.sidebar.header('Pilih Algoritma')
 # Menambahkan dropdown menu di sidebar
 option = st.sidebar.selectbox(
     'Pilih Algoritma',
-    ['ARIMA', 'XGBOOST', 'Algoritma Naive Bayes']
+    ['ARIMA', 'XGBOOST']
 )
 
 # Menampilkan pilihan di halaman utama
@@ -160,53 +160,53 @@ if uploaded_file is not None:
         # Mendapatkan nilai resample_factor berdasarkan resample_option
         resample_factor = resample_mapping.get(resample_option, None)
 
-        if st.button('Latih Model'):
-            if target and waktu:
-                # model.summary()
+        # if st.button('Latih Model'):
+        #     if target and waktu:
+        #         # model.summary()
 
-                # Menyiapkan model sesuai algoritma yang dipilih
-                if option == 'ARIMA':
-                    model = pm.auto_arima(df, start_p=1, start_q=1,
-                            test='adf',
-                            max_p=3, max_q=3, m=resample_factor,
-                            start_P=0, seasonal=True,
-                            d=None, D=1, trace=True,
-                            error_action='ignore',
-                            suppress_warnings=True,
-                            stepwise=True)
+        #         # Menyiapkan model sesuai algoritma yang dipilih
+        #         if option == 'ARIMA':
+                    # model = pm.auto_arima(df, start_p=1, start_q=1,
+                    #         test='adf',
+                    #         max_p=3, max_q=3, m=resample_factor,
+                    #         start_P=0, seasonal=True,
+                    #         d=None, D=1, trace=True,
+                    #         error_action='ignore',
+                    #         suppress_warnings=True,
+                    #         stepwise=True)
                     
-                    fitted, confint = model.predict(n_periods=n_periods, return_conf_int=True)
-                    index_of_fc = pd.date_range(df.index[-1], periods = n_periods, freq=resample_factor)
+                    # fitted, confint = model.predict(n_periods=n_periods, return_conf_int=True)
+                    # index_of_fc = pd.date_range(df.index[-1], periods = n_periods, freq=resample_factor)
 
-                    # make series for plotting purpose
-                    fitted_series = pd.Series(fitted, index=index_of_fc)
-                    lower_series = pd.Series(confint[:, 0], index=index_of_fc)
-                    upper_series = pd.Series(confint[:, 1], index=index_of_fc)
+                    # # make series for plotting purpose
+                    # fitted_series = pd.Series(fitted, index=index_of_fc)
+                    # lower_series = pd.Series(confint[:, 0], index=index_of_fc)
+                    # upper_series = pd.Series(confint[:, 1], index=index_of_fc)
 
-                    if resample_option == 'D':  # Harian
-                        start_date = end_date + pd.Timedelta(days=1)
-                    elif resample_option == 'W':  # Mingguan
-                        start_date = end_date + pd.Timedelta(weeks=1)
-                    elif resample_option == 'M':  # Bulanan
-                        start_date = end_date + pd.DateOffset(months=1)
-                    elif resample_option == 'Y':  # Tahunan
-                        start_date = end_date + pd.DateOffset(years=1)
-                    else:
-                        st.error("Frekuensi waktu tidak valid.")
-                        start_date = None
+                    # if resample_option == 'D':  # Harian
+                    #     start_date = end_date + pd.Timedelta(days=1)
+                    # elif resample_option == 'W':  # Mingguan
+                    #     start_date = end_date + pd.Timedelta(weeks=1)
+                    # elif resample_option == 'M':  # Bulanan
+                    #     start_date = end_date + pd.DateOffset(months=1)
+                    # elif resample_option == 'Y':  # Tahunan
+                    #     start_date = end_date + pd.DateOffset(years=1)
+                    # else:
+                    #     st.error("Frekuensi waktu tidak valid.")
+                    #     start_date = None
 
-                    # Pastikan start_date valid sebelum melanjutkan
-                    if start_date:
-                        # Buat DataFrame baru untuk prediksi
-                        date_range = pd.date_range(start=start_date, periods=n_periods, freq=resample_option)
-                        df_fitted = pd.DataFrame({target: fitted}, index=date_range)
+                    # # Pastikan start_date valid sebelum melanjutkan
+                    # if start_date:
+                    #     # Buat DataFrame baru untuk prediksi
+                    #     date_range = pd.date_range(start=start_date, periods=n_periods, freq=resample_option)
+                    #     df_fitted = pd.DataFrame({target: fitted}, index=date_range)
 
-                        # Gabungkan DataFrame asli dengan DataFrame prediksi
-                        df_combined = pd.concat([df, df_fitted])
+                    #     # Gabungkan DataFrame asli dengan DataFrame prediksi
+                    #     df_combined = pd.concat([df, df_fitted])
 
-                        # Tampilkan DataFrame gabungan
-                        st.write('Dataset Gabungan (Asli + Prediksi):')
-                        st.dataframe(df_combined, height=300)
+                    #     # Tampilkan DataFrame gabungan
+                    #     st.write('Dataset Gabungan (Asli + Prediksi):')
+                    #     st.dataframe(df_combined, height=300)
 
                 # elif option == 'XGBOOST':
                 #     model = DecisionTreeClassifier()
