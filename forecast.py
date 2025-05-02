@@ -7,7 +7,7 @@ from sklearn.metrics import accuracy_score, classification_report, confusion_mat
 # import seaborn as sns
 from datetime import timedelta  # Import timedelta dari modul datetime
 import plotly.express as px
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 # Menambahkan judul aplikasi
 st.title('Aplikasi Time-Series Forecasting (Prediksi) dengan Machine Learning')
 
