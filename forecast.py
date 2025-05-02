@@ -166,8 +166,8 @@ if uploaded_file is not None:
                 # model.summary()
                 end_date = df.index.max()
                 end_date = pd.Timestamp(end_date)
-                st.write(f"end_date: {end_date}, type: {type(end_date)}")
-                st.write(f"resample_option: {resample_option}")
+                # st.write(f"end_date: {end_date}, type: {type(end_date)}")
+                # st.write(f"resample_option: {resample_option}")
 
                 # Menyiapkan model sesuai algoritma yang dipilih
                 if option == 'ARIMA':
@@ -200,7 +200,7 @@ if uploaded_file is not None:
                         st.error("Frekuensi waktu tidak valid.")
                         start_date = None
 
-                    st.write(f"start_date: {start_date}, type: {type(start_date)}")
+                    # st.write(f"start_date: {start_date}, type: {type(start_date)}")
                     # Pastikan start_date valid sebelum melanjutkan
                     if start_date:
                         # Buat DataFrame baru untuk prediksi
@@ -217,8 +217,8 @@ if uploaded_file is not None:
                         df_before = dfbaru[dfbaru.index <= end_date]
                         df_after = dfbaru[dfbaru.index > end_date]
 
-                        st.dataframe(df_before)
-                        st.dataframe(df_after)
+                        # st.dataframe(df_before)
+                        # st.dataframe(df_after)
 
                         figa = px.line(
                             title='Prediksi Penjualan Obat',
@@ -229,7 +229,7 @@ if uploaded_file is not None:
                         # Tambahkan trace untuk data sebelum end_date
                         figa.add_scatter(
                             x=df_before.index,
-                            y=df_before[target],
+                            y=df_before,
                             mode='lines',
                             line=dict(color='blue'),
                             name='Sebelum End Date'
@@ -238,7 +238,7 @@ if uploaded_file is not None:
                         # Tambahkan trace untuk data sesudah end_date
                         figa.add_scatter(
                             x=df_after.index,
-                            y=df_after[target],
+                            y=df_after,
                             mode='lines',
                             line=dict(color='green'),
                             name='Sesudah End Date'
