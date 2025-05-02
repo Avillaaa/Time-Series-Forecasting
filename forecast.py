@@ -200,7 +200,7 @@ if uploaded_file is not None:
                         st.error("Frekuensi waktu tidak valid.")
                         start_date = None
 
-                    # st.write(f"start_date: {start_date}, type: {type(start_date)}")
+                    st.write(f"start_date: {start_date}, type: {type(start_date)}")
                     # Pastikan start_date valid sebelum melanjutkan
                     if start_date:
                         # Buat DataFrame baru untuk prediksi
