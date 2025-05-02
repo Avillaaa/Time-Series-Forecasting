@@ -217,6 +217,9 @@ if uploaded_file is not None:
                         df_before = dfbaru[dfbaru.index <= end_date]
                         df_after = dfbaru[dfbaru.index > end_date]
 
+                        st.dataframe(df_before)
+                        st.dataframe(df_after)
+
                         figa = px.line(
                             title='Prediksi Penjualan Obat',
                             labels={waktu: 'Waktu', filter: 'Penjualan'},
@@ -303,7 +306,7 @@ if uploaded_file is not None:
 
 # Add after st.dataframe(df, height=300) line
 
-if st.checkbox('Tampilkan deskripsi dataset'):
+if st.checkbox('Tampilkan deskripsi dataset Awal'):
     st.subheader('Deskripsi Dataset')
     st.write(df.describe())
 
