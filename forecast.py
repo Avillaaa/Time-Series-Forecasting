@@ -45,7 +45,7 @@ if uploaded_file is not None:
         st.write('Preview Dataset:')
 
         # Menampilkan dataset dengan scroll
-        st.dataframe(df, height=300)
+        st.dataframe(df.head(10), height=300)
         st.write(f'Jumlah Baris: {df.shape[0]}')
         st.write(f'Jumlah Kolom: {df.shape[1]}')
 
