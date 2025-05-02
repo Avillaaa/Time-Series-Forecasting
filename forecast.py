@@ -285,8 +285,8 @@ if uploaded_file is not None:
 
         #     else:
         #         st.error('Pilih kolom filter dan fitur dengan benar.')
-        if st.checkbox('Tampilkan Grafik'):
-            st.subheader('Grafik Penjualan Obat')
+        if st.checkbox('Tampilkan Grafik Awal'):
+            st.subheader('Grafik')
             # Membuat grafik menggunakan Plotly
             fig = px.line(
                 df,
