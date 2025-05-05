@@ -304,8 +304,8 @@ if uploaded_file is not None:
 
                         
                         # Pastikan data aktual dan prediksi tersedia
-                        actual = df[target]  # Data aktual
-                        predicted = fitted[target]  # Data prediksi
+                        actual = df  # Data aktual
+                        predicted = fitted  # Data prediksi
                             # Hitung MAPE
                         mape = (abs(actual - predicted) / actual).mean() * 100
 
