@@ -278,19 +278,6 @@ if uploaded_file is not None:
                             template='plotly_white'
                         )
 
-                        try:
-                            # Pastikan data aktual dan prediksi tersedia
-                            actual = df[target]  # Data aktual
-                            predicted = df_fitted[target]  # Data prediksi
-
-                            # Hitung MAPE
-                            mape = (abs(actual - predicted) / actual).mean() * 100
-
-                            # Tampilkan MAPE
-                            st.write(f"Mean Absolute Percentage Error (MAPE): {mape:.2f}%")
-                        except Exception as e:
-                            st.error(f"Error saat menghitung MAPE: {e}")
-
                         # figa = px.line(
                         #     dfbaru,
                         #     x=waktu,
@@ -315,44 +302,18 @@ if uploaded_file is not None:
                         st.plotly_chart(figa)
 
 
-                        # figa = px.line(
-                        #     title='Prediksi Penjualan Obat',
-                        #     labels={waktu: 'Waktu', filter: 'Penjualan'},
-                        #     template='plotly_white'
-                        # )
+                        try:
+                            # Pastikan data aktual dan prediksi tersedia
+                            actual = df[target]  # Data aktual
+                            predicted = fitted[target]  # Data prediksi
 
-                        # # Tambahkan trace untuk data sebelum end_date
-                        # figa.add_scatter(
-                        #     # df_before,
-                        #     x=df_before[waktu],
-                        #     y=df_before[target],
-                        #     mode='lines',
-                        #     line=dict(color='blue'),
-                        #     name='Sebelum End Date'
-                        # )
+                            # Hitung MAPE
+                            mape = (abs(actual - predicted) / actual).mean() * 100
 
-                        # # Tambahkan trace untuk data sesudah end_date
-                        # figa.add_scatter(
-                        #     # df_after,
-                        #     x=df_after[waktu],
-                        #     y=df_after[target],
-                        #     mode='lines',
-                        #     line=dict(color='green'),
-                        #     name='Sesudah End Date'
-                        # )
-
-                        # # Tambahkan garis vertikal pada end_date
-                        # figa.add_vline(
-                        #     x=end_date,
-                        #     line_dash="dash",
-                        #     line_color="red",
-                        #     annotation_text="End Date",
-                        #     annotation_position="top right"
-                        # )
-
-                        # # Tampilkan grafik di Streamlit
-                        # st.plotly_chart(figa)
-
+                            # Tampilkan MAPE
+                            st.write(f"Mean Absolute Percentage Error (MAPE): {mape:.2f}%")
+                        except Exception as e:
+                            st.error(f"Error saat menghitung MAPE: {e}")
                 # elif option == 'XGBOOST':
                 #     model = DecisionTreeClassifier()
                 # else:
