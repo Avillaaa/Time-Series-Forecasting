@@ -255,6 +255,13 @@ if uploaded_file is not None:
                             st.error("df_after bukan DataFrame atau Series.")
                             # st.stop()
 
+                        if isinstance(df_before, pd.DataFrame):
+                            x_data = df_before[target].values
+                        elif isinstance(df_before, pd.Series):
+                            x_data = df_before.values
+                        else:
+                            st.error("df_before bukan DataFrame atau Series.")
+                            # st.stop()
 
                         figa = px.line(
                             title='Prediksi Penjualan Obat',
@@ -266,7 +273,7 @@ if uploaded_file is not None:
                         figa.add_scatter(
                             # df_before,
                             x=df_before.index,
-                            y=df_before[target],
+                            y=x_data,
                             mode='lines',
                             line=dict(color='blue'),
                             name='Sebelum End Date'
@@ -276,7 +283,7 @@ if uploaded_file is not None:
                         figa.add_scatter(
                             # df_after,
                             x=df_after.index,
-                            y=target[target],
+                            y=y_data,
                             mode='lines',
                             line=dict(color='green'),
                             name='Sesudah End Date'
