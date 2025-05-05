@@ -241,8 +241,8 @@ if uploaded_file is not None:
 
                         # st.dataframe(df_before)
                         # st.dataframe(df_after)
-                        df_before.index = pd.to_datetime(df_before.index)
-                        df_after.index = pd.to_datetime(df_after.index)
+                        df_before = df_before.reset_index().rename(columns={'index': waktu})
+                        df_after = df_after.reset_index().rename(columns={'index': waktu})
 
                         # df_after[target] = pd.to_numeric(df_after[target], errors='coerce').astype('Int64')
                         # df_before[target] = pd.to_numeric(df_before[target], errors='coerce').astype('Int64')
@@ -272,7 +272,7 @@ if uploaded_file is not None:
                         # Tambahkan trace untuk data sebelum end_date
                         figa.add_scatter(
                             # df_before,
-                            x=df_before.index,
+                            x=df_before[waktu],
                             y=df_before[target],
                             mode='lines',
                             line=dict(color='blue'),
@@ -282,7 +282,7 @@ if uploaded_file is not None:
                         # Tambahkan trace untuk data sesudah end_date
                         figa.add_scatter(
                             # df_after,
-                            x=df_after.index,
+                            x=df_after[waktu],
                             y=df_after[target],
                             mode='lines',
                             line=dict(color='green'),
