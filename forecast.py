@@ -211,9 +211,9 @@ if uploaded_file is not None:
                     upper_series = pd.Series(confint[:, 1], index=index_of_fc)
 
                     if resample_option == 'D':  # Harian
-                        start_date = end_date + timedelta(days=1)
+                        start_date = end_date + pd.Timedelta(days=1)
                     elif resample_option == 'W':  # Mingguan
-                        start_date = end_date + timedelta(weeks=1)
+                        start_date = end_date + pd.Timedelta(weeks=1)
                     elif resample_option == 'M':  # Bulanan
                         start_date = end_date + pd.DateOffset(months=1)
                     elif resample_option == 'Y':  # Tahunan
