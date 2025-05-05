@@ -266,7 +266,7 @@ if uploaded_file is not None:
                         # Buat grafik dari dfbaru
                         figa = px.line(
                             dfbaru,
-                            x=waktu,
+                            x=dfbaru.index,
                             y=target,
                             title='Prediksi Penjualan Obat',
                             labels={waktu: 'Waktu', target: 'Penjualan'},
