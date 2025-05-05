@@ -220,41 +220,41 @@ if uploaded_file is not None:
                         # st.dataframe(df_before)
                         # st.dataframe(df_after)
 
-                        figa = px.line(
-                            title='Prediksi Penjualan Obat',
-                            labels={waktu: 'Waktu', filter: 'Penjualan'},
-                            template='plotly_white'
-                        )
+                        # figa = px.line(
+                        #     title='Prediksi Penjualan Obat',
+                        #     labels={waktu: 'Waktu', filter: 'Penjualan'},
+                        #     template='plotly_white'
+                        # )
 
-                        # Tambahkan trace untuk data sebelum end_date
-                        figa.add_scatter(
-                            x=df_before.index,
-                            y=df_before,
-                            mode='lines',
-                            line=dict(color='blue'),
-                            name='Sebelum End Date'
-                        )
+                        # # Tambahkan trace untuk data sebelum end_date
+                        # figa.add_scatter(df_before,
+                        #     x=df_before.index,
+                        #     y=df_before,
+                        #     mode='lines',
+                        #     line=dict(color='blue'),
+                        #     name='Sebelum End Date'
+                        # )
 
-                        # Tambahkan trace untuk data sesudah end_date
-                        figa.add_scatter(
-                            x=df_after.index,
-                            y=df_after,
-                            mode='lines',
-                            line=dict(color='green'),
-                            name='Sesudah End Date'
-                        )
+                        # # Tambahkan trace untuk data sesudah end_date
+                        # figa.add_scatter(df_after,
+                        #     x=df_after.index,
+                        #     y=target,
+                        #     mode='lines',
+                        #     line=dict(color='green'),
+                        #     name='Sesudah End Date'
+                        # )
 
-                        # Tambahkan garis vertikal pada end_date
-                        figa.add_vline(
-                            x=end_date,
-                            line_dash="dash",
-                            line_color="red",
-                            annotation_text="End Date",
-                            annotation_position="top right"
-                        )
+                        # # Tambahkan garis vertikal pada end_date
+                        # figa.add_vline(
+                        #     x=end_date,
+                        #     line_dash="dash",
+                        #     line_color="red",
+                        #     annotation_text="End Date",
+                        #     annotation_position="top right"
+                        # )
 
-                        # Tampilkan grafik di Streamlit
-                        st.plotly_chart(figa)
+                        # # Tampilkan grafik di Streamlit
+                        # st.plotly_chart(figa)
 
                 # elif option == 'XGBOOST':
                 #     model = DecisionTreeClassifier()
