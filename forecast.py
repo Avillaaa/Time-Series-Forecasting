@@ -161,6 +161,19 @@ if uploaded_file is not None:
         # Mendapatkan nilai resample_factor berdasarkan resample_option
         resample_factor = resample_mapping.get(resample_option, None)
 
+        if st.checkbox('Tampilkan Grafik Awal'):
+            st.subheader('Grafik')
+            fig = px.line(
+                df,
+                x=df.index,  # Kolom waktu sebagai sumbu X
+                y=target,  # Kolom filter sebagai sumbu Y
+                title='Grafik Penjualan Obat',
+                labels={waktu: 'Waktu', filter: 'Penjualan'},
+                template='plotly_white'
+            )
+            # Menampilkan grafik di Streamlit
+            st.plotly_chart(fig)
+
         if st.button('Prediksi'):
             if target and waktu:
                 # model.summary()
@@ -219,42 +232,47 @@ if uploaded_file is not None:
 
                         # st.dataframe(df_before)
                         # st.dataframe(df_after)
+                        df_before.index = pd.to_datetime(df_before.index)
+                        df_after.index = pd.to_datetime(df_after.index)
 
-                        # figa = px.line(
-                        #     title='Prediksi Penjualan Obat',
-                        #     labels={waktu: 'Waktu', filter: 'Penjualan'},
-                        #     template='plotly_white'
-                        # )
 
-                        # # Tambahkan trace untuk data sebelum end_date
-                        # figa.add_scatter(df_before,
-                        #     x=df_before.index,
-                        #     y=df_before,
-                        #     mode='lines',
-                        #     line=dict(color='blue'),
-                        #     name='Sebelum End Date'
-                        # )
+                        figa = px.line(
+                            title='Prediksi Penjualan Obat',
+                            labels={waktu: 'Waktu', filter: 'Penjualan'},
+                            template='plotly_white'
+                        )
 
-                        # # Tambahkan trace untuk data sesudah end_date
-                        # figa.add_scatter(df_after,
-                        #     x=df_after.index,
-                        #     y=target,
-                        #     mode='lines',
-                        #     line=dict(color='green'),
-                        #     name='Sesudah End Date'
-                        # )
+                        # Tambahkan trace untuk data sebelum end_date
+                        figa.add_scatter(
+                            # df_before,
+                            x=df_before.index,
+                            y=df_before[target],
+                            mode='lines',
+                            line=dict(color='blue'),
+                            name='Sebelum End Date'
+                        )
 
-                        # # Tambahkan garis vertikal pada end_date
-                        # figa.add_vline(
-                        #     x=end_date,
-                        #     line_dash="dash",
-                        #     line_color="red",
-                        #     annotation_text="End Date",
-                        #     annotation_position="top right"
-                        # )
+                        # Tambahkan trace untuk data sesudah end_date
+                        figa.add_scatter(
+                            # df_after,
+                            x=df_after.index,
+                            y=target[target],
+                            mode='lines',
+                            line=dict(color='green'),
+                            name='Sesudah End Date'
+                        )
 
-                        # # Tampilkan grafik di Streamlit
-                        # st.plotly_chart(figa)
+                        # Tambahkan garis vertikal pada end_date
+                        figa.add_vline(
+                            x=end_date,
+                            line_dash="dash",
+                            line_color="red",
+                            annotation_text="End Date",
+                            annotation_position="top right"
+                        )
+
+                        # Tampilkan grafik di Streamlit
+                        st.plotly_chart(figa)
 
                 # elif option == 'XGBOOST':
                 #     model = DecisionTreeClassifier()
@@ -285,19 +303,6 @@ if uploaded_file is not None:
 
         #     else:
         #         st.error('Pilih kolom filter dan fitur dengan benar.')
-        if st.checkbox('Tampilkan Grafik Awal'):
-            st.subheader('Grafik')
-            # Membuat grafik menggunakan Plotly
-            fig = px.line(
-                df,
-                x=df.index,  # Kolom waktu sebagai sumbu X
-                y=target,  # Kolom filter sebagai sumbu Y
-                title='Grafik Penjualan Obat',
-                labels={waktu: 'Waktu', filter: 'Penjualan'},
-                template='plotly_white'
-            )
-            # Menampilkan grafik di Streamlit
-            st.plotly_chart(fig)
 
     except pd.errors.EmptyDataError:
         st.error('File kosong atau format tidak valid.')
