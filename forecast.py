@@ -263,13 +263,14 @@ if uploaded_file is not None:
                         #     st.error("df_before bukan DataFrame atau Series.")
                         #     # st.stop()
 
+                        dfbaru = dfbaru.reset_index().rename(columns={'index': waktu})
                         dfbaru['fase'] = dfbaru[waktu].apply(lambda x: 'Sebelum End Date' if x <= end_date else 'Sesudah End Date')
 
 
                         # Buat grafik dari dfbaru
                         figa = px.line(
                             dfbaru,
-                            x=dfbaru.index,
+                            x=waktu,
                             y=target,
                             color='fase',
                             title='Hasil Prediksi',
