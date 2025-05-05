@@ -263,24 +263,39 @@ if uploaded_file is not None:
                         #     st.error("df_before bukan DataFrame atau Series.")
                         #     # st.stop()
 
+                        dfbaru['fase'] = dfbaru[waktu].apply(lambda x: 'Sebelum End Date' if x <= end_date else 'Sesudah End Date')
+
+
                         # Buat grafik dari dfbaru
                         figa = px.line(
                             dfbaru,
                             x=dfbaru.index,
                             y=target,
+                            color='fase',
                             title='Hasil Prediksi',
                             labels={waktu: 'Waktu', target: 'Penjualan'},
                             template='plotly_white'
                         )
 
+                        # figa = px.line(
+                        #     dfbaru,
+                        #     x=waktu,
+                        #     y=filter,
+                        #     color='fase',
+                        #     title='Prediksi Penjualan Obat',
+                        #     labels={waktu: 'Waktu', filter: 'Penjualan'},
+                        #     template='plotly_white'
+                        # )
+
                         # Tambahkan garis vertikal di end_date
-                        figa.add_vline(
-                            x=end_date.to_pydatetime(),
-                            line_dash="dash",
-                            line_color="red",
-                            annotation_text="End Date",
-                            annotation_position="top right"
-                        )
+                        # # Tambahkan garis vertikal di end_date
+                        # figa.add_vline(
+                        #     x=end_date.to_pydatetime(),
+                        #     line_dash="dash",
+                        #     line_color="red",
+                        #     annotation_text="End Date",
+                        #     annotation_position="top right"
+                        # )
 
                         # Tampilkan grafik
                         st.plotly_chart(figa)
