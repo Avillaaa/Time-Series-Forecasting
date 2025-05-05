@@ -244,6 +244,8 @@ if uploaded_file is not None:
                         df_before.index = pd.to_datetime(df_before.index)
                         df_after.index = pd.to_datetime(df_after.index)
 
+                        df_after[target] = pd.to_numeric(df_after[target], errors='coerce').astype('Int64')
+                        df_before[target] = pd.to_numeric(df_before[target], errors='coerce').astype('Int64')
 
                         figa = px.line(
                             title='Prediksi Penjualan Obat',
