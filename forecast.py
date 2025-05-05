@@ -302,18 +302,15 @@ if uploaded_file is not None:
                         st.plotly_chart(figa)
 
 
-                        try:
-                            # Pastikan data aktual dan prediksi tersedia
-                            actual = df[target]  # Data aktual
-                            predicted = fitted[target]  # Data prediksi
-
+                        
+                        # Pastikan data aktual dan prediksi tersedia
+                        actual = df[target]  # Data aktual
+                        predicted = fitted[target]  # Data prediksi
                             # Hitung MAPE
-                            mape = (abs(actual - predicted) / actual).mean() * 100
+                        mape = (abs(actual - predicted) / actual).mean() * 100
 
                             # Tampilkan MAPE
-                            st.write(f"Mean Absolute Percentage Error (MAPE): {mape:.2f}%")
-                        except Exception as e:
-                            st.error(f"Error saat menghitung MAPE: {e}")
+                        st.write(f"Mean Absolute Percentage Error (MAPE): {mape:.2f}%")
                 # elif option == 'XGBOOST':
                 #     model = DecisionTreeClassifier()
                 # else:
