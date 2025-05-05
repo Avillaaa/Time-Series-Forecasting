@@ -49,6 +49,15 @@ if uploaded_file is not None:
         st.write(f'Jumlah Baris: {df.shape[0]}')
         st.write(f'Jumlah Kolom: {df.shape[1]}')
 
+        if st.checkbox('Tampilkan deskripsi dataset Awal'):
+            st.subheader('Deskripsi Dataset')
+            st.write(df.describe())
+
+        # Display missing values information
+        st.write('Jumlah Nilai Hilang:')
+        missing_values = df.isnull().sum()
+        st.write(missing_values[missing_values > 0])
+
         st.subheader('Pemilihan Variabel')
         # Menampilkan dropdown untuk memilih variabel fitur dan filter
         columns = df.columns.tolist()
@@ -310,12 +319,3 @@ if uploaded_file is not None:
         st.error(f'Error: {e}')
 
 # Add after st.dataframe(df, height=300) line
-
-if st.checkbox('Tampilkan deskripsi dataset Awal'):
-    st.subheader('Deskripsi Dataset')
-    st.write(df.describe())
-
-    # Display missing values information
-    st.write('Jumlah Nilai Hilang:')
-    missing_values = df.isnull().sum()
-    st.write(missing_values[missing_values > 0])
