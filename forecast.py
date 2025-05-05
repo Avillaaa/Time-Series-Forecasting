@@ -271,7 +271,7 @@ if uploaded_file is not None:
 
                         # Tambahkan trace untuk data sebelum end_date
                         figa.add_scatter(
-                            df_before,
+                            # df_before,
                             x=df_before.index,
                             y=df_before[target],
                             mode='lines',
@@ -281,7 +281,7 @@ if uploaded_file is not None:
 
                         # Tambahkan trace untuk data sesudah end_date
                         figa.add_scatter(
-                            df_after,
+                            # df_after,
                             x=df_after.index,
                             y=df_after[target],
                             mode='lines',
