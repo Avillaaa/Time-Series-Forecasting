@@ -247,21 +247,21 @@ if uploaded_file is not None:
                         # df_after[target] = pd.to_numeric(df_after[target], errors='coerce').astype('Int64')
                         # df_before[target] = pd.to_numeric(df_before[target], errors='coerce').astype('Int64')
 
-                        if isinstance(df_after, pd.DataFrame):
-                            y_data = df_after[target].values
-                        elif isinstance(df_after, pd.Series):
-                            y_data = df_after.values
-                        else:
-                            st.error("df_after bukan DataFrame atau Series.")
-                            # st.stop()
+                        # if isinstance(df_after, pd.DataFrame):
+                        #     y_data = df_after[target].values
+                        # elif isinstance(df_after, pd.Series):
+                        #     y_data = df_after.values
+                        # else:
+                        #     st.error("df_after bukan DataFrame atau Series.")
+                        #     # st.stop()
 
-                        if isinstance(df_before, pd.DataFrame):
-                            x_data = df_before[target].values
-                        elif isinstance(df_before, pd.Series):
-                            x_data = df_before.values
-                        else:
-                            st.error("df_before bukan DataFrame atau Series.")
-                            # st.stop()
+                        # if isinstance(df_before, pd.DataFrame):
+                        #     x_data = df_before[target].values
+                        # elif isinstance(df_before, pd.Series):
+                        #     x_data = df_before.values
+                        # else:
+                        #     st.error("df_before bukan DataFrame atau Series.")
+                        #     # st.stop()
 
                         figa = px.line(
                             title='Prediksi Penjualan Obat',
@@ -271,9 +271,9 @@ if uploaded_file is not None:
 
                         # Tambahkan trace untuk data sebelum end_date
                         figa.add_scatter(
-                            # df_before,
+                            df_before,
                             x=df_before.index,
-                            y=x_data,
+                            y=df_before[target],
                             mode='lines',
                             line=dict(color='blue'),
                             name='Sebelum End Date'
@@ -281,9 +281,9 @@ if uploaded_file is not None:
 
                         # Tambahkan trace untuk data sesudah end_date
                         figa.add_scatter(
-                            # df_after,
+                            df_after,
                             x=df_after.index,
-                            y=y_data,
+                            y=df_after[target],
                             mode='lines',
                             line=dict(color='green'),
                             name='Sesudah End Date'
