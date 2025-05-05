@@ -49,14 +49,14 @@ if uploaded_file is not None:
         st.write(f'Jumlah Baris: {df.shape[0]}')
         st.write(f'Jumlah Kolom: {df.shape[1]}')
 
-        if st.checkbox('Tampilkan deskripsi dataset Awal'):
-            st.subheader('Deskripsi Dataset')
-            st.write(df.describe())
-
         # Display missing values information
         st.write('Jumlah Nilai Hilang:')
         missing_values = df.isnull().sum()
         st.write(missing_values[missing_values > 0])
+        
+        if st.checkbox('Tampilkan deskripsi dataset Awal'):
+            st.subheader('Deskripsi Dataset')
+            st.write(df.describe())
 
         st.subheader('Pemilihan Variabel')
         # Menampilkan dropdown untuk memilih variabel fitur dan filter
@@ -264,7 +264,7 @@ if uploaded_file is not None:
                         #     # st.stop()
 
                         dfbaru = dfbaru.reset_index().rename(columns={'index': waktu})
-                        dfbaru['fase'] = dfbaru[waktu].apply(lambda x: 'Sebelum End Date' if x <= end_date else 'Sesudah End Date')
+                        dfbaru['fase'] = dfbaru[waktu].apply(lambda x: 'Data Asli' if x <= end_date else 'Prediksi')
 
 
                         # Buat grafik dari dfbaru
@@ -274,9 +274,22 @@ if uploaded_file is not None:
                             y=target,
                             color='fase',
                             title='Hasil Prediksi',
-                            labels={waktu: 'Waktu', target: 'Penjualan'},
+                            labels={waktu: 'Waktu', target: 'Target'},
                             template='plotly_white'
                         )
+
+                        try:
+                            # Pastikan data aktual dan prediksi tersedia
+                            actual = df[target]  # Data aktual
+                            predicted = df_fitted[target]  # Data prediksi
+
+                            # Hitung MAPE
+                            mape = (abs(actual - predicted) / actual).mean() * 100
+
+                            # Tampilkan MAPE
+                            st.write(f"Mean Absolute Percentage Error (MAPE): {mape:.2f}%")
+                        except Exception as e:
+                            st.error(f"Error saat menghitung MAPE: {e}")
 
                         # figa = px.line(
                         #     dfbaru,
