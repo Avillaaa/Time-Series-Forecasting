@@ -244,8 +244,17 @@ if uploaded_file is not None:
                         df_before.index = pd.to_datetime(df_before.index)
                         df_after.index = pd.to_datetime(df_after.index)
 
-                        df_after[target] = pd.to_numeric(df_after[target], errors='coerce').astype('Int64')
-                        df_before[target] = pd.to_numeric(df_before[target], errors='coerce').astype('Int64')
+                        # df_after[target] = pd.to_numeric(df_after[target], errors='coerce').astype('Int64')
+                        # df_before[target] = pd.to_numeric(df_before[target], errors='coerce').astype('Int64')
+
+                        if isinstance(df_after, pd.DataFrame):
+                            y_data = df_after[target].values
+                        elif isinstance(df_after, pd.Series):
+                            y_data = df_after.values
+                        else:
+                            st.error("df_after bukan DataFrame atau Series.")
+                            # st.stop()
+
 
                         figa = px.line(
                             title='Prediksi Penjualan Obat',
