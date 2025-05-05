@@ -268,19 +268,19 @@ if uploaded_file is not None:
                             dfbaru,
                             x=dfbaru.index,
                             y=target,
-                            title='Prediksi Penjualan Obat',
+                            title='Hasil Prediksi',
                             labels={waktu: 'Waktu', target: 'Penjualan'},
                             template='plotly_white'
                         )
 
-                        # # Tambahkan garis vertikal di end_date
-                        # figa.add_vline(
-                        #     x=end_date,
-                        #     line_dash="dash",
-                        #     line_color="red",
-                        #     annotation_text="End Date",
-                        #     annotation_position="top right"
-                        # )
+                        # Tambahkan garis vertikal di end_date
+                        figa.add_vline(
+                            x=end_date.to_pydatetime(),
+                            line_dash="dash",
+                            line_color="red",
+                            annotation_text="End Date",
+                            annotation_position="top right"
+                        )
 
                         # Tampilkan grafik
                         st.plotly_chart(figa)
