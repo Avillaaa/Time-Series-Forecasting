@@ -306,8 +306,9 @@ if uploaded_file is not None:
                         # Pastikan data aktual dan prediksi tersedia
                         actual = df[target]  # Data aktual
                         predictions = model.predict_in_sample()
-                            # Hitung MAPE
-                        mape = (abs(actual - predictions) / actual).mean() * 100
+                        predicted_values = predictions  # Data prediksi dimulai dari indeks ke-7
+                        # Hitung MAPE
+                        mape = (abs(actual - predicted_values) / actual).mean() * 100
 
                             # Tampilkan MAPE
                         st.write(f"Mean Absolute Percentage Error (MAPE): {mape:.2f}%")
