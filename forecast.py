@@ -304,10 +304,10 @@ if uploaded_file is not None:
 
                         
                         # Pastikan data aktual dan prediksi tersedia
-                        actual = df  # Data aktual
-                        predicted = fitted  # Data prediksi
+                        actual = df[target]  # Data aktual
+                        predictions = model.predict_in_sample()
                             # Hitung MAPE
-                        mape = (abs(actual - predicted) / actual).mean() * 100
+                        mape = (abs(actual - predictions) / actual).mean() * 100
 
                             # Tampilkan MAPE
                         st.write(f"Mean Absolute Percentage Error (MAPE): {mape:.2f}%")
