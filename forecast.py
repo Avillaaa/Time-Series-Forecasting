@@ -311,7 +311,11 @@ if uploaded_file is not None:
                         mape = (abs(actual - predicted_values) / actual).mean() * 100
 
                             # Tampilkan MAPE
-                        st.write(f"Mean Absolute Percentage Error (MAPE): {mape:.2f}%")
+                        mape_str = f"{mape:.2f}%"
+
+                        # Tampilkan di Streamlit
+                        st.write(f"Mean Absolute Percentage Error (MAPE): {mape_str}")
+
                 # elif option == 'XGBOOST':
                 #     model = DecisionTreeClassifier()
                 # else:
